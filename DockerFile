@@ -1,16 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /App
 
-COPY *.csproj ./
-RUN dotnet nuget locals all --clear
+# Copy everything
+COPY . ./
+# Restore as distinct layers
 RUN dotnet restore
+# Build and publish a release
+RUN dotnet publish -c Release -o out
 
-COPY . .
-RUN dotnet publish ./TuristeiRV.API.csproj -c Release -o out
-
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
-WORKDIR /app
-COPY --from=build /app/out .
-
-EXPOSE 80
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /App
+COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "TuristeiRV.API.dll"]
