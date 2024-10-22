@@ -10,7 +10,7 @@ WORKDIR /src
 
 COPY TuristeiRV.API.csproj ./TuristeiRV.API/
 
-COPY ./credentials/turisteirv.json /app/credentials/turisteirv.json
+# COPY ./credentials/turisteirv.json /app/credentials/turisteirv.json
 
 WORKDIR /src/TuristeiRV.API
 RUN dotnet restore
