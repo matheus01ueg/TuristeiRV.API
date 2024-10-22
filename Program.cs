@@ -24,13 +24,10 @@ if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath
 
 builder.Services.AddSingleton<FirestoreDb>(provider =>
 {
-    // Carregar o arquivo de credenciais JSON diretamente
     GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json");
 
-    // Obter o ID do projeto (você pode obter isso do JSON de credenciais ou de uma configuração)
-    string projectId = "turisteirv";  // Substitua pelo seu projectId ou configure via appsettings.json
+    string projectId = "turisteirv";  
 
-    // Criar a instância do FirestoreDb passando as credenciais
     FirestoreDb firestoreDb = FirestoreDb.Create(projectId, new FirestoreClientBuilder
     {
         ChannelCredentials = credential.ToChannelCredentials()

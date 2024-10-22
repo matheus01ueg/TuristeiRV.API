@@ -1,33 +1,32 @@
-# Etapa base do runtime, usada para executar a aplicação
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-# Etapa de build para restaurar e compilar o projeto
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copiar o arquivo de projeto e restaurar dependências
+
 COPY TuristeiRV.API.csproj ./TuristeiRV.API/
-# Copiar o arquivo de credenciais para o contêiner
+
 COPY ./credentials/turisteirv.json /app/credentials/turisteirv.json
 
 WORKDIR /src/TuristeiRV.API
 RUN dotnet restore
 
-# Copiar o restante do código e compilar
 COPY . .
 RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
-# Etapa de publicação para gerar os artefatos finais
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Etapa final que copia os artefatos da publicação e executa a aplicação
 FROM base AS final
 WORKDIR /app
+
+RUN mkdir -p /app/credentials
+RUN echo $GOOGLE_CREDENTIALS_BASE64 | base64 -d > /app/credentials/turisteirv.json
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TuristeiRV.API.dll"]
