@@ -1,7 +1,7 @@
 [build]
 builder = "dockerfile"
-dockerfilePath = "./WebApiDeployExample/Dockerfile"
+dockerfilePath = "./TuristeiRV.API/Dockerfile"
 
 [deploy]
-startCommand = "dotnet WebApiDeployExample.dll"
+startCommand = "dotnet TuristeiRV.API.dll"
 restartPolicyType = "never"
