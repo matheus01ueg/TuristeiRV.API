@@ -5,6 +5,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["TuristeiRV.API/TuristeiRV.API.csproj", "TuristeiRV.API/"]
+RUN dotnet nuget locals all --clear
 RUN dotnet restore "TuristeiRV.API/TuristeiRV.API.csproj"
 COPY . .
 WORKDIR "/src/TuristeiRV.API"
