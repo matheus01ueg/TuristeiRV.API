@@ -13,11 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (FirebaseApp.DefaultInstance == null)
+string ?credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
 {
     FirebaseApp.Create(new AppOptions()
     {
-        Credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
+        Credential = GoogleCredential.FromFile(credentialsPath)
     });
 }
 

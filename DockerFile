@@ -11,6 +11,9 @@ WORKDIR /src
 
 # Copiar o arquivo de projeto e restaurar dependências
 COPY TuristeiRV.API.csproj ./TuristeiRV.API/
+# Copiar o arquivo de credenciais para o contêiner
+COPY ./credentials/turisteirv.json /app/credentials/turisteirv.json
+
 WORKDIR /src/TuristeiRV.API
 RUN dotnet restore
 
