@@ -10,18 +10,18 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copiar o arquivo de projeto e restaurar dependências
-COPY ["./TuristeiRV.API.csproj", "./"]
-RUN dotnet restore "./TuristeiRV.API.csproj"
+COPY TuristeiRV.API.csproj ./TuristeiRV.API/
+WORKDIR /src/TuristeiRV.API
+RUN dotnet restore
 
 # Copiar o restante do código e compilar
 COPY . .
-WORKDIR "/src/TuristeiRV.API"
-RUN dotnet build "./TuristeiRV.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 # Etapa de publicação para gerar os artefatos finais
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./TuristeiRV.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Etapa final que copia os artefatos da publicação e executa a aplicação
 FROM base AS final
