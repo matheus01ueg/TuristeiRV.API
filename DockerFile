@@ -1,20 +1,30 @@
+# Etapa base do runtime, usada para executar a aplicação
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 
+# Etapa de build para restaurar e compilar o projeto
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["TuristeiRV.API/TuristeiRV.API.csproj", "TuristeiRV.API/"]
+
+# Limpar cache de pacotes NuGet para garantir que tudo será restaurado do zero
 RUN dotnet nuget locals all --clear
-RUN dotnet restore "TuristeiRV.API/TuristeiRV.API.csproj"
+
+# Copiar o arquivo de projeto e restaurar dependências
+COPY ["TuristeiRV.API/TuristeiRV.API.csproj", "TuristeiRV.API/"]
+RUN dotnet restore "TuristeiRV.API/TuristeiRV.API.csproj" --verbosity detailed
+
+# Copiar o restante do código fonte e compilar
 COPY . .
 WORKDIR "/src/TuristeiRV.API"
-RUN dotnet build "TuristeiRV.API.csproj" -c Release -o /app/build
+RUN dotnet build "TuristeiRV.API.csproj" -c Release -o /app/build --verbosity detailed
 
+# Etapa de publicação para gerar os artefatos finais
 FROM build AS publish
 RUN dotnet publish "TuristeiRV.API.csproj" -c Release -o /app/out --verbosity detailed
 
+# Etapa final que copia os artefatos da publicação e executa a aplicação
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app/out .
 ENTRYPOINT ["dotnet", "TuristeiRV.API.dll"]
