@@ -10,8 +10,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copiar o arquivo de projeto e restaurar dependências
-COPY ["TuristeiRV.API/TuristeiRV.API.csproj", "TuristeiRV.API/"]
-RUN dotnet restore "./TuristeiRV.API/TuristeiRV.API.csproj"
+COPY ["./TuristeiRV.API.csproj", "TuristeiRV.API/"]
+RUN dotnet restore "./TuristeiRV.API.csproj"
 
 # Copiar o restante do código e compilar
 COPY . .
