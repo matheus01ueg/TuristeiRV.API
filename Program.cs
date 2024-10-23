@@ -13,22 +13,69 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string ?credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
-if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
-{
-    FirebaseApp.Create(new AppOptions()
-    {
-        Credential = GoogleCredential.FromFile(credentialsPath)
-    });
-}
+
+
+
+// ******* Credenciais para o Railway *******
+// string ?credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+// if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
+// {
+//     FirebaseApp.Create(new AppOptions()
+//     {
+//         Credential = GoogleCredential.FromFile(credentialsPath)
+//     });
+// }
+
+
+// builder.Services.AddSingleton<FirestoreDb>(provider =>
+// {
+//     GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json");
+
+//     string projectId = "turisteirv";  
+
+//     FirestoreDb firestoreDb = FirestoreDb.Create(projectId, new FirestoreClientBuilder
+//     {
+//         ChannelCredentials = credential.ToChannelCredentials()
+//     }.Build());
+
+//     return firestoreDb;
+// });
+
+
+//******** Conexao para ambiente de desenvolvimento ****
+// builder.Services.AddSingleton<FirestoreDb>(provider =>
+// {
+//     GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
+//         .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" }); 
+
+//     FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
+//     {
+//         ChannelCredentials = credential.ToChannelCredentials()
+//     }.Build());
+
+//     return firestoreDb;
+// });
+
+
+//****** Conexão para o servidor Railway e ambiente local *******
+string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
 
 builder.Services.AddSingleton<FirestoreDb>(provider =>
 {
-    GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json");
+    GoogleCredential credential;
 
-    string projectId = "turisteirv";  
+    if (string.IsNullOrEmpty(credentialsPath))
+    {
+        credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
+            .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
+    }
+    else
+    {
+        credential = GoogleCredential.FromFile(credentialsPath)
+            .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
+    }
 
-    FirestoreDb firestoreDb = FirestoreDb.Create(projectId, new FirestoreClientBuilder
+    FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
     {
         ChannelCredentials = credential.ToChannelCredentials()
     }.Build());
@@ -36,15 +83,13 @@ builder.Services.AddSingleton<FirestoreDb>(provider =>
     return firestoreDb;
 });
 
-// Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", builder.Configuration["Firebase:D:\\Projetos\\Credencial\\turisteirv.json"]);
-
-// builder.Services.AddSingleton<FirestoreDb>(provider =>
-// {
-//     string projectId = builder.Configuration["Firebase:turisteirv"];
-//     FirestoreDb firestoreDb = FirestoreDb.Create(projectId);
-//     return firestoreDb;
-// });
-
+if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
+{
+    FirebaseApp.Create(new AppOptions()
+    {
+        Credential = GoogleCredential.FromFile(credentialsPath)
+    });
+}
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
@@ -58,14 +103,21 @@ builder.Services.AddScoped<IComentarioService, ComentarioService>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
+//****** Definindo conf para o Railway ******
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
 builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
 
+//****** Swagger fora do ambiente de desenvolvimento *****
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
 
 //app.UseHttpsRedirection();
 

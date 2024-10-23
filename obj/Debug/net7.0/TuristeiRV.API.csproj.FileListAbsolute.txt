@@ -57,3 +57,4 @@ d:\Projetos\TuristeiRV.API\obj\Debug\net7.0\refint\TuristeiRV.API.dll
 d:\Projetos\TuristeiRV.API\obj\Debug\net7.0\TuristeiRV.API.pdb
 d:\Projetos\TuristeiRV.API\obj\Debug\net7.0\TuristeiRV.API.genruntimeconfig.cache
 d:\Projetos\TuristeiRV.API\obj\Debug\net7.0\ref\TuristeiRV.API.dll
+d:\Projetos\TuristeiRV.API\bin\Debug\net7.0\credentials\turisteirv.json
