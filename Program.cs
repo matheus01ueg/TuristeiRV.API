@@ -84,13 +84,13 @@ builder.Services.AddSingleton<FirestoreDb>(provider =>
 //     return firestoreDb;
 // });
 
-if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
-{
-    FirebaseApp.Create(new AppOptions()
-    {
-        Credential = GoogleCredential.FromFile(credentialsPath)
-    });
-}
+// if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
+// {
+//     FirebaseApp.Create(new AppOptions()
+//     {
+//         Credential = GoogleCredential.FromFile(credentialsPath)
+//     });
+// }
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
