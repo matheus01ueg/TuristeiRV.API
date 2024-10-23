@@ -43,37 +43,11 @@ builder.Services.AddSwaggerGen();
 
 
 //******** Conexao para ambiente de desenvolvimento ****
-// builder.Services.AddSingleton<FirestoreDb>(provider =>
-// {
-//     GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
-//         .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" }); 
-
-//     FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
-//     {
-//         ChannelCredentials = credential.ToChannelCredentials()
-//     }.Build());
-
-//     return firestoreDb;
-// });
-
-
-//****** Conexão para o servidor Railway e ambiente local *******
 string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
-
 builder.Services.AddSingleton<FirestoreDb>(provider =>
 {
-    GoogleCredential credential;
-
-    if (string.IsNullOrEmpty(credentialsPath))
-    {
-        credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
-            .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
-    }
-    else
-    {
-        credential = GoogleCredential.FromFile(credentialsPath)
-            .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
-    }
+    GoogleCredential credential = GoogleCredential.FromFile(credentialsPath)
+        .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" }); 
 
     FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
     {
@@ -82,6 +56,33 @@ builder.Services.AddSingleton<FirestoreDb>(provider =>
 
     return firestoreDb;
 });
+
+
+//****** Conexão para o servidor Railway e ambiente local *******
+// string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+
+// builder.Services.AddSingleton<FirestoreDb>(provider =>
+// {
+//     GoogleCredential credential;
+
+//     if (string.IsNullOrEmpty(credentialsPath))
+//     {
+//         credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
+//             .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
+//     }
+//     else
+//     {
+//         credential = GoogleCredential.FromFile(credentialsPath)
+//             .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
+//     }
+
+//     FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
+//     {
+//         ChannelCredentials = credential.ToChannelCredentials()
+//     }.Build());
+
+//     return firestoreDb;
+// });
 
 if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
 {
@@ -104,20 +105,20 @@ builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 //****** Definindo conf para o Railway ******
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-builder.WebHost.UseUrls($"http://*:{port}");
+// var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+// builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
 
 //****** Swagger fora do ambiente de desenvolvimento *****
-app.UseSwagger();
-app.UseSwaggerUI();
+// app.UseSwagger();
+// app.UseSwaggerUI();
 
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 //app.UseHttpsRedirection();
 
