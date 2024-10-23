@@ -105,8 +105,8 @@ builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 //****** Definindo conf para o Railway ******
-// var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
-// builder.WebHost.UseUrls($"http://*:{port}");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
 
