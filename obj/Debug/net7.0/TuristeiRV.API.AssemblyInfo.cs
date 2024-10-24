@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TuristeiRV.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dc443a4cc6246b6bc48d3aaa319fdbfc5aba6d48")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e46db1b7a453ece5b86567c951718a8b8e65eae2")]
 [assembly: System.Reflection.AssemblyProductAttribute("TuristeiRV.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TuristeiRV.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

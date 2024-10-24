@@ -51,7 +51,8 @@ if (!string.IsNullOrEmpty(credentialsJson))
     GoogleCredential credential;
     using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(credentialsJson)))
     {
-        credential = GoogleCredential.FromStream(stream);
+        credential = GoogleCredential.FromStream(stream)
+            .CreateScoped("https://www.googleapis.com/auth/cloud-platform");;
     }
 
     // Obter o ID do projeto (você pode pegar isso diretamente das credenciais ou configurar manualmente)
