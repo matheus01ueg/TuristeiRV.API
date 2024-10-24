@@ -43,19 +43,25 @@ builder.Services.AddSwaggerGen();
 
 
 //******** Conexao para ambiente de desenvolvimento ****
-string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
-builder.Services.AddSingleton<FirestoreDb>(provider =>
+// Carregar o conteúdo do JSON da variável de ambiente
+string? credentialsJson = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
+
+if (!string.IsNullOrEmpty(credentialsJson))
 {
-    GoogleCredential credential = GoogleCredential.FromFile(credentialsPath)
-        .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" }); 
-
-    FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
+    // Usar o conteúdo JSON diretamente em vez de um caminho de arquivo
+    GoogleCredential credential;
+    using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(credentialsJson)))
     {
-        ChannelCredentials = credential.ToChannelCredentials()
-    }.Build());
+        credential = GoogleCredential.FromStream(stream);
+    }
 
-    return firestoreDb;
-});
+    // Agora você pode usar a variável 'credential' para autenticação com o Firebase/Firestore
+    builder.Services.AddSingleton(credential);
+}
+else
+{
+    throw new Exception("A variável de ambiente GOOGLE_CREDENTIALS_JSON não está definida ou está vazia.");
+}
 
 
 //****** Conexão para o servidor Railway e ambiente local *******
