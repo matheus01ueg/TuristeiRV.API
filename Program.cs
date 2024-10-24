@@ -48,15 +48,26 @@ string? credentialsJson = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS
 
 if (!string.IsNullOrEmpty(credentialsJson))
 {
-    // Usar o conteúdo JSON diretamente em vez de um caminho de arquivo
     GoogleCredential credential;
     using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(credentialsJson)))
     {
         credential = GoogleCredential.FromStream(stream);
     }
 
-    // Agora você pode usar a variável 'credential' para autenticação com o Firebase/Firestore
-    builder.Services.AddSingleton(credential);
+    // Obter o ID do projeto (você pode pegar isso diretamente das credenciais ou configurar manualmente)
+    string projectId = "turisteirv";  // Substitua pelo ID do projeto real
+
+    // Converter o GoogleCredential em ChannelCredentials
+    var channelCredentials = credential.ToChannelCredentials();
+
+    // Criar o FirestoreClient usando o ChannelCredentials
+    var firestoreClient = new FirestoreClientBuilder
+    {
+        ChannelCredentials = channelCredentials
+    }.Build();
+
+    // Registrar o FirestoreDb no DI com o FirestoreClient
+    builder.Services.AddSingleton(FirestoreDb.Create(projectId, firestoreClient));
 }
 else
 {
