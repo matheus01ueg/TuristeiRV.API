@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen();
 
 
 //******** Conexao para ambiente de desenvolvimento ****
-string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_BASE64");
+string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_CREDENTIALS_JSON");
 builder.Services.AddSingleton<FirestoreDb>(provider =>
 {
     GoogleCredential credential = GoogleCredential.FromFile(credentialsPath)
