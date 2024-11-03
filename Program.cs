@@ -13,9 +13,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
-
 // ******* Credenciais para o Railway *******
 // string ?credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
 // if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
@@ -55,19 +52,15 @@ if (!string.IsNullOrEmpty(credentialsJson))
             .CreateScoped("https://www.googleapis.com/auth/cloud-platform");;
     }
 
-    // Obter o ID do projeto (você pode pegar isso diretamente das credenciais ou configurar manualmente)
-    string projectId = "turisteirv";  // Substitua pelo ID do projeto real
+    string projectId = "turisteirv";  
 
-    // Converter o GoogleCredential em ChannelCredentials
     var channelCredentials = credential.ToChannelCredentials();
 
-    // Criar o FirestoreClient usando o ChannelCredentials
     var firestoreClient = new FirestoreClientBuilder
     {
         ChannelCredentials = channelCredentials
     }.Build();
 
-    // Registrar o FirestoreDb no DI com o FirestoreClient
     builder.Services.AddSingleton(FirestoreDb.Create(projectId, firestoreClient));
 }
 else

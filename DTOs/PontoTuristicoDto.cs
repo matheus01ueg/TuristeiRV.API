@@ -5,7 +5,7 @@ public class PontoTuristicoDto
     public string Id { get; set; }
     public double Avaliacao { get; set; }
     public string Bairro { get; set; }
-    public string CategoriaId { get; set; }
+    public int CategoriaId { get; set; }
     public string Celular { get; set; }
     public string Cidade { get; set; }
     public string Complemento { get; set; }
@@ -38,6 +38,4 @@ public class ImagemDto
 {
     public string Url { get; set; }
     public string Descricao { get; set; }
-    public DateTime DataUpload { get; set; }
-    public bool Principal { get; set; }
 }

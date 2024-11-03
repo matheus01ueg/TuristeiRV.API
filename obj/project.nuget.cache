@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "d3t1l6xPBoU=",
+  "dgSpecHash": "1/1jL7KGqjk=",
   "success": true,
-  "projectFilePath": "d:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
+  "projectFilePath": "D:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mathe\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\mathe\\.nuget\\packages\\firebaseadmin\\3.0.1\\firebaseadmin.3.0.1.nupkg.sha512",

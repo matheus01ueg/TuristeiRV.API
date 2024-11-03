@@ -16,7 +16,15 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5269",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "GOOGLE_CREDENTIALS_JSON": "{ \"type\": \"service_account\", \"project_id\": \"turisteirv\", \"private_key_id\": \"362956623eb33a270cf829a93b5610f94b9f6aba\", \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCj0hssHVZkOp42\\nVfKYktoU/XMruojrsjq/hwi/MbpYcbO2Z7MUXdcJOgYS4HakFlso8QxffV6BDuut\\nW/MtvSzUmxYgylbau7mZHUBZegOOv8veOCyTQWRJetUwcxg75T4QdmiEg0FPPpf1\\nk/jobFkvpLSiOVs0T8H2GFh0u7zJBtwYlLF3pZv641FgbZRT+dc5vVTrG9wChKRk\\nWKy9FQ8s+3QYgyEzV9g25IOxLu71Zk+Z9lw3gyAufcsCJHYdKxG9cYZtrMHuvG2j\\n352xw32ii1MEOcmaSlg1ULqiDgMJ2OXZ5vTQTsTy29ZB28E9Abhwt8d6UiPg213L\\nGQKBju6/AgMBAAECggEABp9Ht0cIgSEskov++hw19OSflKLPl3uFV55qYQ5igoUH\\n8t5E6EL+TNELx+Yz+Hejy3XBOJsj6yh3BXNnJHXe/9T6uSaExDUT1i79wLSQR28x\\n1VDE0rOaDaHPdnqaCa8/aeQhpNZlpMemG+iVhpGI3ICtpG+BBwKMXZ+WaIfLMBX9\\nt4+VhsUM/PIuWNU/3UJO47zGsJXnSeGlph+EtDVM/0USvkymKTLn5B9L6CIRCEgD\\nuIXWiabJaF7aF1MbLsccnwME8IseSEJMb8VidSAX8FtgBrx5k9Xy1j8b4NBar+CJ\\nJVP2Gd42+HZwPp5TeWXi8EH5i8Zj32zmnWPOcr+NOQKBgQC/ZTKrCjr+44JFQhBs\\nvThPvvAI1yGGt/Kcm+9xNCkb1WSb3BD5qJ/R3Kwfrv1+nF+ODx6sDg7d9jRhSKqL\\nAod03EaGRKbrwSboMlSfjxAwBnnquzh+B99698Ltuap0VCnK4AXe7lyIfCQ9yYei\\njvFxZ8pt00FOKBMcOHVZeR1m6QKBgQDbHiQSOerXXpbbL7RS7pCH/3vKcAvBs88Q\\nUCUtLAFVrifn0KDTvvSEOdtXDtLgllkXM/XYOcVqPbVNR7Qsbf/n9Z0wa/3vHdfC\\n2c3bhdTA6fZo9snpj7+ufcMlkzYzrFil98zSU7aIglXA1tCL5pST+aDOUOFwr0Aw\\nqRVFbA/vZwKBgC+kx1ogb9MnWzRWX7RR3gSr6SCqPORGQhSOFKq/a0RMeID75RXg\\nzff10LsKWnv7/SVlyiLWVQkX0q4s4pc8B/AlLUEbMdoZ+M9wR/R4LnVmB09RT5y/\\n5Pe9WT7IKxBOKyEfZxa5iztGe9cNpb/niV7LkW6JWgZUn3006LFfHtyRAoGBAIPW\\nds2gm3RKLWpkIZNkhwHM7qa3E9vQXF3sWvH68DKlPs1z8dB1rJmCVj7jZG5NB/21\\n/c3DtMxfpJ6C7h1tcfQXDCT+VSNySUer1PioZYJNQz2Uf5hQLXzHnosVMB+XKx9x\\nIYPLaqBoC0Cj/4atjega4m5Aq+QpDe45TdsfUdcxAoGAcw7l2gZW6exi2la0fISD\\ndlEYRLeI4O9VSVU/uYXVnYaEYtGFEz2ffEhlytp017xDz5KN6eWg8lNmLrG69Aj0\\nMK50ItZTVn59U4R8jiCXIW8IO9M4mTitdjO8Fz8ND7hJKR8Zi6S2VLYFrHVK5t6l\\nmdx2K11uw1kO3FghSBdin7E=\\n-----END PRIVATE KEY-----\\n",
+        "client_email": "firebase-adminsdk-9j0v9@turisteirv.iam.gserviceaccount.com",
+        "client_id": "104832868276846615135",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9j0v9%40turisteirv.iam.gserviceaccount.com",
+        "universe_domain": "googleapis.com"
       }
     },
     "https": {

@@ -91,9 +91,7 @@ public static class PontoTuristicoMapper
         return new ImagemDto
         {
             Url = model.Url,
-            Descricao = model.Descricao,
-            DataUpload = model.DataUpload.ToDateTime(),
-            Principal = model.Principal
+            Descricao = model.Descricao
         };
     }
 
@@ -102,9 +100,7 @@ public static class PontoTuristicoMapper
         return new Imagem
         {
             Url = dto.Url,
-            Descricao = dto.Descricao,
-            DataUpload = Timestamp.FromDateTime(dto.DataUpload),
-            Principal = dto.Principal
+            Descricao = dto.Descricao
         };
     }
 }
