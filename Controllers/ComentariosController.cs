@@ -24,6 +24,17 @@ public class ComentariosController : ControllerBase
         return Ok(comentarios);
     }
 
+    [HttpGet("ponto-turistico/{pontoTuristicoId}")]
+    public async Task<IActionResult> ListarComentariosPontoTuristicoAsync(string pontoTuristicoId)
+    {
+        var comentarios = await _comentarioService.ListarComentariosPontoTuristicoAsync(pontoTuristicoId);
+        if (comentarios == null || !comentarios.Any())
+        {
+            return NotFound(new { mensagem = "Nenhum comentário encontrado para o ponto turístico especificado." });
+        }
+        return Ok(comentarios);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> ObterComentarioPorId(string id)
     {

@@ -14,8 +14,11 @@ public class Comentario
     [FirestoreProperty("data")]
     public Timestamp Data { get; set; }
 
-    [FirestoreProperty("id")]
-    public int Id { get; set; }
+    [FirestoreDocumentId]
+    public string Id { get; set; }
+
+    [FirestoreProperty("nome")]
+    public string Nome { get; set; }
 
     [FirestoreProperty("pontoTuristicoId")]
     public string PontoTuristicoId { get; set; }

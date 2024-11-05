@@ -14,30 +14,36 @@ public class ComentarioService : IComentarioService
 
     public async Task<List<ComentarioDto>> ListarTodosComentariosAsync()
     {
-        var comentarios = await _comentarioRepository.GetAllAsync();
+        var comentarios = await _comentarioRepository.GetComentariosAsync();
+        return comentarios.Select(ComentarioMapper.ToDto).ToList();
+    }
+
+    public async Task<List<ComentarioDto>> ListarComentariosPontoTuristicoAsync(string pontoTuristicoId)
+    {
+        var comentarios = await _comentarioRepository.GetComentariosByPontoTuristicoIdAsync(pontoTuristicoId);
         return comentarios.Select(ComentarioMapper.ToDto).ToList();
     }
 
     public async Task<ComentarioDto> ObterComentarioPorIdAsync(string id)
     {
-        var comentario = await _comentarioRepository.GetByIdAsync(id);
+        var comentario = await _comentarioRepository.GetComentariosByIdAsync(id);
         return comentario?.ToDto();
     }
 
     public async Task AdicionarComentarioAsync(ComentarioDto comentarioDto)
     {
         var comentario = ComentarioMapper.ToModel(comentarioDto);
-        await _comentarioRepository.AddAsync(comentario);
+        await _comentarioRepository.AddComentarioAsync(comentario);
     }
 
     public async Task AtualizarComentarioAsync(string id, ComentarioDto comentarioDto)
     {
         var comentario = ComentarioMapper.ToModel(comentarioDto);
-        await _comentarioRepository.UpdateAsync(id, comentario);
+        await _comentarioRepository.UpdateComentarioAsync(id, comentario);
     }
 
     public async Task DeletarComentarioAsync(string id)
     {
-        await _comentarioRepository.DeleteAsync(id);
+        await _comentarioRepository.DeleteComentarioAsync(id);
     }
 }

@@ -14,6 +14,7 @@ public static class ComentarioMapper
             ComentarioTexto = dto.ComentarioTexto,
             Data = Timestamp.FromDateTime(dto.Data.ToUniversalTime()),
             Id = dto.Id,
+            Nome = dto.Nome,
             PontoTuristicoId = dto.PontoTuristicoId,
             Resposta = dto.Resposta,
             UserId = dto.UserId
@@ -28,6 +29,7 @@ public static class ComentarioMapper
             ComentarioTexto = model.ComentarioTexto,
             Data = model.Data.ToDateTime(),
             Id = model.Id,
+            Nome = model.Nome,
             PontoTuristicoId = model.PontoTuristicoId,
             Resposta = model.Resposta,
             UserId = model.UserId

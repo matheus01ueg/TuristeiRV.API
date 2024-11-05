@@ -3,9 +3,10 @@ using TuristeiRV.API.Models.Entidade;
 namespace TuristeiRV.API.Repositories;
 public interface IComentarioRepository
 {
-    Task<List<Comentario>> GetAllAsync();
-    Task<Comentario> GetByIdAsync(string id);
-    Task AddAsync(Comentario comentario);
-    Task UpdateAsync(string id, Comentario comentario);
-    Task DeleteAsync(string id);
+    Task<List<Comentario>> GetComentariosAsync();
+    Task<List<Comentario>> GetComentariosByPontoTuristicoIdAsync(string pontoTuristicoId);
+    Task<Comentario> GetComentariosByIdAsync(string id);
+    Task AddComentarioAsync(Comentario comentario);
+    Task UpdateComentarioAsync(string id, Comentario comentario);
+    Task DeleteComentarioAsync(string id);
 }
