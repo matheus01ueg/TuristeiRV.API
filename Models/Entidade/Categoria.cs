@@ -5,8 +5,8 @@ namespace TuristeiRV.API.Models.Entidade;
 [FirestoreData]
 public class Categoria
 {
-    [FirestoreProperty("id")]
-    public int Id { get; set; }
+    [FirestoreDocumentId]
+    public string Id { get; set; }
 
     [FirestoreProperty("nome")]
     public string Nome { get; set; }

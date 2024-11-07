@@ -5,7 +5,7 @@ public class PontoTuristicoDto
     public string Id { get; set; }
     public double Avaliacao { get; set; }
     public string Bairro { get; set; }
-    public int CategoriaId { get; set; }
+    public string CategoriaId { get; set; }
     public string Celular { get; set; }
     public string Cidade { get; set; }
     public string Complemento { get; set; }

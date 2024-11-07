@@ -15,7 +15,7 @@ public class PontoTuristico
     public string Bairro { get; set; }
 
     [FirestoreProperty("categoriaId")]
-    public int CategoriaId { get; set; }
+    public string CategoriaId { get; set; }
 
     [FirestoreProperty("celular")]
     public string Celular { get; set; }
