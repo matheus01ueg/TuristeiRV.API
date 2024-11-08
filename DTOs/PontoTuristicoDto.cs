@@ -8,7 +8,7 @@ public class PontoTuristicoDto
         Imagens = null;
         Horarios = null;
     }
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     [StringLength(100, ErrorMessage = "O Nome não pode ter mais de 100 caracteres.")]
@@ -19,12 +19,12 @@ public class PontoTuristicoDto
 
     [Required(ErrorMessage = "O campo CategoriaId é obrigatório.")]
     public string CategoriaId { get; set; }
-    public string Celular { get; set; }
-    public string Complemento { get; set; }
+    public string? Celular { get; set; }
+    public string? Complemento { get; set; }
 
     [Required(ErrorMessage = "O campo Bairro é obrigatório.")]
     [StringLength(100, ErrorMessage = "O Bairro não pode ter mais de 100 caracteres.")]
-    public string Bairro { get; set; } // Opcional
+    public string? Bairro { get; set; } // Opcional
 
     [Required(ErrorMessage = "O campo Email é obrigatório.")]
     [EmailAddress(ErrorMessage = "E-mail inválido.")]
@@ -36,8 +36,8 @@ public class PontoTuristicoDto
 
     [Required(ErrorMessage = "O campo Endereco é obrigatório.")]
     public string Numero { get; set; } // Opcional
-    public string Site { get; set; }
-    public string Telefone { get; set; }
+    public string? Site { get; set; }
+    public string? Telefone { get; set; }
 
     [Range(-90, 90, ErrorMessage = "Latitude deve estar entre -90 e 90.")]
     public double? Latitude { get; set; } // Opcional
