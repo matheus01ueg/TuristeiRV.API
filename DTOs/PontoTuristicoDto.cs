@@ -3,6 +3,11 @@ namespace TuristeiRV.API.DTOs;
 
 public class PontoTuristicoDto
 {
+    public PontoTuristicoDto()
+    {
+        Imagens = null;
+        Horarios = null;
+    }
     public string Id { get; set; }
 
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]

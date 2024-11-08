@@ -5,7 +5,7 @@ using TuristeiRV.API.Repositories;
 
 namespace TuristeiRV.API.Controllers;
 
-[ApiController]
+//[ApiController]
 [Route("api/[controller]")]
 
 public class PontosTuristicosController : ControllerBase
