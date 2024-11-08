@@ -1,6 +1,7 @@
 using Google.Cloud.Firestore;
 using TuristeiRV.API.DTOs;
 using TuristeiRV.API.Models.Entidade;
+using System.ComponentModel.DataAnnotations;
 
 namespace TuristeiRV.API.Mappers;
 
@@ -15,12 +16,10 @@ public static class PontoTuristicoMapper
             Bairro = model.Bairro,
             CategoriaId = model.CategoriaId,
             Celular = model.Celular,
-            Cidade = model.Cidade,
             Complemento = model.Complemento,
             Descricao = model.Descricao,
             Email = model.Email,
             Endereco = model.Endereco,
-            Estado = model.Estado,
             Horarios = model.Horarios?.ToDto(),
             Latitude = model.Latitude,
             Longitude = model.Longitude,
@@ -41,12 +40,10 @@ public static class PontoTuristicoMapper
             Bairro = dto.Bairro,
             CategoriaId = dto.CategoriaId,
             Celular = dto.Celular,
-            Cidade = dto.Cidade,
             Complemento = dto.Complemento,
             Descricao = dto.Descricao,
             Email = dto.Email,
             Endereco = dto.Endereco,
-            Estado = dto.Estado,
             Horarios = dto.Horarios?.ToModel(),
             Latitude = dto.Latitude,
             Longitude = dto.Longitude,

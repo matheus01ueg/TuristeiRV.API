@@ -42,10 +42,10 @@ public class PontoTuristico
     public Horarios Horarios { get; set; }
 
     [FirestoreProperty("latitude")]
-    public double Latitude { get; set; }
+    public double? Latitude { get; set; }
 
     [FirestoreProperty("longitude")]
-    public double Longitude { get; set; }
+    public double? Longitude { get; set; }
 
     [FirestoreProperty("nome")]
     public string Nome { get; set; }
