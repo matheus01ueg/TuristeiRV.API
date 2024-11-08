@@ -45,8 +45,8 @@ public class PontoTuristicoDto
     [Range(-180, 180, ErrorMessage = "Longitude deve estar entre -180 e 180.")]
     public double? Longitude { get; set; } // Opcional
     public double Avaliacao { get; set; } // Opcional
-    public List<ImagemDto> Imagens { get; set; } // Opcional
-    public HorariosDto Horarios { get; set; } // Opcional
+    public List<ImagemDto>? Imagens { get; set; } // Opcional
+    public HorariosDto? Horarios { get; set; } // Opcional
 }
 
 public class HorariosDto
