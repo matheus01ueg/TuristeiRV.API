@@ -22,7 +22,14 @@ public class PontoTuristicoService : IPontoTuristicoService
 
     public async Task AdicionarPontoTuristicoAsync(PontoTuristicoDto dto)
     {
-        var pontoTuristico = dto.ToModel(); 
+        var pontoTuristico = dto.ToModel();
+
+        // Gera um ID único se o campo Id estiver nulo ou vazio
+        if (string.IsNullOrEmpty(pontoTuristico.Id))
+        {
+            pontoTuristico.Id = Guid.NewGuid().ToString();
+        }
+
         await _pontoTuristicoRepository.AddAsync(pontoTuristico);
     }
 

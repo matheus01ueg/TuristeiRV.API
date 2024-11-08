@@ -34,6 +34,11 @@ public class PontoTuristicoRepository : IPontoTuristicoRepository
 
     public async Task AddAsync(PontoTuristico pontoTuristico)
     {
+        if (string.IsNullOrEmpty(pontoTuristico.Id))
+        {
+            throw new ArgumentException("O campo Id é obrigatório para adicionar um novo ponto turístico.");
+        }
+        
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(pontoTuristico.Id.ToString());
         await docRef.SetAsync(pontoTuristico);
     }
