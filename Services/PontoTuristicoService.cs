@@ -38,6 +38,10 @@ public class PontoTuristicoService : IPontoTuristicoService
         var pontoTuristico = pontoTuristicoDto.ToModel();
         await _pontoTuristicoRepository.UpdateAsync(id, pontoTuristico);
     }
+    public async Task AtualizarImagensPontoTuristicoAsync(string id, List<Imagem> imagens)
+    {
+        await _pontoTuristicoRepository.UpdateImagensAsync(id, imagens);
+    }
 
     public async Task DeletarPontoTuristicoAsync(string id)
     {

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TuristeiRV.API.DTOs;
 using TuristeiRV.API.Services;
 using TuristeiRV.API.Repositories;
+using TuristeiRV.API.Models.Entidade;
 
 namespace TuristeiRV.API.Controllers;
 
@@ -76,5 +77,18 @@ public class PontosTuristicosController : ControllerBase
         {
             var pontosTuristicos = await _pontoTuristicoService.ListarTodosPontosTuristicosAsync();
             return Ok(pontosTuristicos);
+        }
+
+        [HttpPut("{id}/imagens")]
+        public async Task<IActionResult> AtualizarImagensPontoTuristico(string id, [FromBody] List<Imagem> imagens)
+        {
+            var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
+            if (pontoTuristicoExistente == null)
+            {
+                return NotFound(new { mensagem = "Ponto turístico não encontrado." });
+            }
+
+            await _pontoTuristicoService.AtualizarImagensPontoTuristicoAsync(id, imagens);
+            return NoContent();
         }
 }

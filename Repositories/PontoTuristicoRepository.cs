@@ -38,7 +38,7 @@ public class PontoTuristicoRepository : IPontoTuristicoRepository
         {
             throw new ArgumentException("O campo Id é obrigatório para adicionar um novo ponto turístico.");
         }
-        
+
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(pontoTuristico.Id.ToString());
         await docRef.SetAsync(pontoTuristico);
     }
@@ -47,6 +47,18 @@ public class PontoTuristicoRepository : IPontoTuristicoRepository
     {
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(id);
         await docRef.SetAsync(pontoTuristico, SetOptions.Overwrite);
+    }
+
+    public async Task UpdateImagensAsync(string id, List<Imagem> imagens)
+    {
+        DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(id);
+
+        Dictionary<string, object> update = new Dictionary<string, object>
+        {
+            { "imagens", imagens }
+        };
+
+        await docRef.UpdateAsync(update);
     }
 
     public async Task DeleteAsync(string id)
