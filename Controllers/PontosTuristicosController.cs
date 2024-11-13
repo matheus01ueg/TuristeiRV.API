@@ -17,78 +17,99 @@ public class PontosTuristicosController : ControllerBase
         _pontoTuristicoService = pontoTuristicoService;
     }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> ObterPontoTuristicoPorId(string id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> ObterPontoTuristicoPorId(string id)
+    {
+        var pontoTuristico = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
+        if (pontoTuristico == null)
         {
-            var pontoTuristico = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
-            if (pontoTuristico == null)
-            {
-                return NotFound(new { mensagem = "Ponto turístico não encontrado." });
-            }
-            return Ok(pontoTuristico);
+            return NotFound(new { mensagem = "Ponto turístico não encontrado." });
+        }
+        return Ok(pontoTuristico);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AdicionarPontoTuristico([FromBody] PontoTuristicoDto pontoTuristicoDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AdicionarPontoTuristico([FromBody] PontoTuristicoDto pontoTuristicoDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        await _pontoTuristicoService.AdicionarPontoTuristicoAsync(pontoTuristicoDto);
+        return Ok(pontoTuristicoDto);
+        //return CreatedAtAction(nameof(ObterPontoTuristicoPorId), new { id = pontoTuristicoDto.Id }, pontoTuristicoDto);
+    }
 
-            await _pontoTuristicoService.AdicionarPontoTuristicoAsync(pontoTuristicoDto);
-            return Ok(pontoTuristicoDto);
-            //return CreatedAtAction(nameof(ObterPontoTuristicoPorId), new { id = pontoTuristicoDto.Id }, pontoTuristicoDto);
+    [HttpPut("{id}")]
+    public async Task<IActionResult> AtualizarPontoTuristico(string id, [FromBody] PontoTuristicoDto pontoTuristicoDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> AtualizarPontoTuristico(string id, [FromBody] PontoTuristicoDto pontoTuristicoDto)
+        var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
+        if (pontoTuristicoExistente == null)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return NotFound(new { mensagem = "Ponto turístico não encontrado." });
+        }
 
+        await _pontoTuristicoService.AtualizarPontoTuristicoAsync(id, pontoTuristicoDto);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeletarPontoTuristico(string id)
+    {
+        var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
+        if (pontoTuristicoExistente == null)
+        {
+            return NotFound(new { mensagem = "Ponto turístico não encontrado." });
+        }
+
+        await _pontoTuristicoService.DeletarPontoTuristicoAsync(id);
+        return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ListarTodosPontosTuristicos()
+    {
+        var pontosTuristicos = await _pontoTuristicoService.ListarTodosPontosTuristicosAsync();
+        return Ok(pontosTuristicos);
+    }
+
+    [HttpPut("{id}/imagens")]
+    public async Task<IActionResult> AtualizarImagensPontoTuristico(string id, [FromBody] List<Imagem> imagens)
+    {
+        try
+        {
+            // Verifica se o ponto turístico existe
             var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
             if (pontoTuristicoExistente == null)
             {
                 return NotFound(new { mensagem = "Ponto turístico não encontrado." });
             }
 
-            await _pontoTuristicoService.AtualizarPontoTuristicoAsync(id, pontoTuristicoDto);
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletarPontoTuristico(string id)
-        {
-            var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
-            if (pontoTuristicoExistente == null)
+            // Verifica se a lista de imagens está vazia
+            if (imagens == null || !imagens.Any())
             {
-                return NotFound(new { mensagem = "Ponto turístico não encontrado." });
+                return BadRequest(new { mensagem = "A lista de imagens não pode estar vazia." });
             }
 
-            await _pontoTuristicoService.DeletarPontoTuristicoAsync(id);
-            return NoContent();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ListarTodosPontosTuristicos()
-        {
-            var pontosTuristicos = await _pontoTuristicoService.ListarTodosPontosTuristicosAsync();
-            return Ok(pontosTuristicos);
-        }
-
-        [HttpPut("{id}/imagens")]
-        public async Task<IActionResult> AtualizarImagensPontoTuristico(string id, [FromBody] List<Imagem> imagens)
-        {
-            var pontoTuristicoExistente = await _pontoTuristicoService.ObterPontoTuristicoPorIdAsync(id);
-            if (pontoTuristicoExistente == null)
-            {
-                return NotFound(new { mensagem = "Ponto turístico não encontrado." });
-            }
-
+            // Tenta atualizar as imagens
             await _pontoTuristicoService.AtualizarImagensPontoTuristicoAsync(id, imagens);
             return NoContent();
         }
+        catch (ArgumentException ex)
+        {
+            // Trata erros de argumento inválido (por exemplo, ID inválido)
+            return BadRequest(new { mensagem = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Trata erros gerais
+            return StatusCode(500, new { mensagem = "Ocorreu um erro ao atualizar as imagens do ponto turístico.", detalhes = ex.Message });
+        }
+    }
 }
