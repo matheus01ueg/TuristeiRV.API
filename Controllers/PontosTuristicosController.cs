@@ -36,9 +36,11 @@ public class PontosTuristicosController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        await _pontoTuristicoService.AdicionarPontoTuristicoAsync(pontoTuristicoDto);
+        var pontoTuristicoId = await _pontoTuristicoService.AdicionarPontoTuristicoAsync(pontoTuristicoDto);
+
+        pontoTuristicoDto.Id = pontoTuristicoId;
+        
         return Ok(pontoTuristicoDto);
-        //return CreatedAtAction(nameof(ObterPontoTuristicoPorId), new { id = pontoTuristicoDto.Id }, pontoTuristicoDto);
     }
 
     [HttpPut("{id}")]

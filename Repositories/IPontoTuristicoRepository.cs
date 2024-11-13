@@ -5,7 +5,7 @@ public interface IPontoTuristicoRepository
 {
     Task<List<PontoTuristico>> GetAllAsync();
     Task<PontoTuristico> GetByIdAsync(string id);
-    Task AddAsync(PontoTuristico pontoTuristico);
+    Task<string> AddAsync(PontoTuristico pontoTuristico);
     Task UpdateAsync(string id, PontoTuristico pontoTuristico);
     Task UpdateImagensAsync(string id, List<Imagem> imagens);
     Task DeleteAsync(string id);

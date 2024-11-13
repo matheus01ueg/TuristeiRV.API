@@ -20,17 +20,17 @@ public class PontoTuristicoService : IPontoTuristicoService
         return pontoTuristico?.ToDto(); 
     }
 
-    public async Task AdicionarPontoTuristicoAsync(PontoTuristicoDto dto)
+    public async Task<string> AdicionarPontoTuristicoAsync(PontoTuristicoDto dto)
     {
         var pontoTuristico = dto.ToModel();
 
-        // Gera um ID único se o campo Id estiver nulo ou vazio
         if (string.IsNullOrEmpty(pontoTuristico.Id))
         {
             pontoTuristico.Id = Guid.NewGuid().ToString();
         }
 
-        await _pontoTuristicoRepository.AddAsync(pontoTuristico);
+        var DocumentId = await _pontoTuristicoRepository.AddAsync(pontoTuristico);
+        return DocumentId;
     }
 
     public async Task AtualizarPontoTuristicoAsync(string id, PontoTuristicoDto pontoTuristicoDto)
