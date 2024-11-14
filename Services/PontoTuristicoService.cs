@@ -53,4 +53,22 @@ public class PontoTuristicoService : IPontoTuristicoService
         var pontosTuristicos = await _pontoTuristicoRepository.GetAllAsync();
         return pontosTuristicos.Select(p => p.ToDto()).ToList(); 
     }
+
+    public async Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorCategoriaAsync(string categoriaId)
+    {
+        var pontosTuristicos = await _pontoTuristicoRepository.GetByCategoriaIdAsync(categoriaId);
+        return pontosTuristicos.Select(p => p.ToDto()).ToList(); 
+    }
+
+    public async Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorSearchTextAsync(string searchText)
+    {
+        var pontosTuristicos = await _pontoTuristicoRepository.GetByTextAsync(searchText);
+        return pontosTuristicos.Select(p => p.ToDto()).ToList();
+    }
+
+    public async Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorSearchTextAndCategoriaAsync(string categoriaId, string searchText)
+    {
+        var pontosTuristicos = await _pontoTuristicoRepository.GetByCategoriaIdAndTextAsync(categoriaId, searchText);
+        return pontosTuristicos.Select(p => p.ToDto()).ToList();
+    }
 }

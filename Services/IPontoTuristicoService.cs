@@ -10,4 +10,7 @@ public interface IPontoTuristicoService
     Task AtualizarImagensPontoTuristicoAsync(string id, List<Imagem> imagens);
     Task DeletarPontoTuristicoAsync(string id);
     Task<List<PontoTuristicoDto>> ListarTodosPontosTuristicosAsync();
+    Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorCategoriaAsync(string categoriaId);
+    Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorSearchTextAsync(string searchText);
+    Task<List<PontoTuristicoDto>> ListarPontosTuristicosPorSearchTextAndCategoriaAsync(string categoriaId, string searchText);
 }

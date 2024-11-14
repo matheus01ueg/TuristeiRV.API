@@ -75,9 +75,27 @@ public class PontosTuristicosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> ListarTodosPontosTuristicos()
+    public async Task<IActionResult> ListarPontosTuristicos([FromQuery] string? categoriaId, [FromQuery] string? searchText)
     {
-        var pontosTuristicos = await _pontoTuristicoService.ListarTodosPontosTuristicosAsync();
+        List<PontoTuristicoDto> pontosTuristicos;
+
+        if (!string.IsNullOrEmpty(categoriaId) && !string.IsNullOrEmpty(searchText))
+        {
+            pontosTuristicos = await _pontoTuristicoService.ListarPontosTuristicosPorSearchTextAndCategoriaAsync(categoriaId, searchText);
+        }
+        else if (!string.IsNullOrEmpty(categoriaId))
+        {
+            pontosTuristicos = await _pontoTuristicoService.ListarPontosTuristicosPorCategoriaAsync(categoriaId);
+        }
+        else if (!string.IsNullOrEmpty(searchText))
+        {
+            pontosTuristicos = await _pontoTuristicoService.ListarPontosTuristicosPorSearchTextAsync(searchText);
+        }
+        else
+        {
+            pontosTuristicos = await _pontoTuristicoService.ListarTodosPontosTuristicosAsync();
+        }
+
         return Ok(pontosTuristicos);
     }
 

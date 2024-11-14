@@ -9,4 +9,7 @@ public interface IPontoTuristicoRepository
     Task UpdateAsync(string id, PontoTuristico pontoTuristico);
     Task UpdateImagensAsync(string id, List<Imagem> imagens);
     Task DeleteAsync(string id);
+    Task<List<PontoTuristico>> GetByCategoriaIdAsync(string categoriaId);
+    Task<List<PontoTuristico>> GetByTextAsync(string searchText);
+    Task<List<PontoTuristico>> GetByCategoriaIdAndTextAsync(string categoriaId, string searchText);
 }
