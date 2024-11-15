@@ -11,7 +11,6 @@ public static class UsuarioMapper
         {
             Nome = dto.Nome,
             Sobrenome = dto.Sobrenome,
-            Cep = dto.Cep,
             Endereco = dto.Endereco,
             Numero = dto.Numero,
             Complemento = dto.Complemento,
@@ -28,7 +27,6 @@ public static class UsuarioMapper
         {
             Nome = model.Nome,
             Sobrenome = model.Sobrenome,
-            Cep = model.Cep,
             Endereco = model.Endereco,
             Numero = model.Numero,
             Complemento = model.Complemento,

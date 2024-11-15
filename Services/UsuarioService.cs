@@ -54,7 +54,6 @@ public class UsuarioService : IUsuarioService
             Endereco = usuario.Endereco,
             Numero = usuario.Numero,
             Bairro = usuario.Bairro,
-            Cep = usuario.Cep,
             Complemento = usuario.Complemento
         };
     }
@@ -96,7 +95,6 @@ public class UsuarioService : IUsuarioService
             Endereco = usuario.Endereco,
             Numero = usuario.Numero,
             Bairro = usuario.Bairro,
-            Cep = usuario.Cep,
             Complemento = usuario.Complemento
         };
     }

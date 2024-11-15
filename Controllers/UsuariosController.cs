@@ -32,7 +32,6 @@ public class UsuariosController : ControllerBase
                 Endereco = usuarioDto.Endereco,
                 Numero = usuarioDto.Numero,
                 Bairro = usuarioDto.Bairro,
-                Cep = usuarioDto.Cep,
                 Complemento = usuarioDto.Complemento
             };
 

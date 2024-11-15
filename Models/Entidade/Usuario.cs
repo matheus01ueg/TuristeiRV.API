@@ -14,9 +14,6 @@ public class Usuario
     [FirestoreProperty("sobrenome")]
     public string Sobrenome { get; set; }
 
-    [FirestoreProperty("cep")]
-    public string Cep { get; set; }
-
     [FirestoreProperty("endereco")]
     public string Endereco { get; set; }
 

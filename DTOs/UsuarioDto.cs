@@ -4,7 +4,6 @@ public class UsuarioDto
 {
     public string Nome { get; set; }
     public string Sobrenome { get; set; }
-    public string Cep { get; set; }
     public string Endereco { get; set; }
     public string Numero { get; set; }
     public string Complemento { get; set; }
