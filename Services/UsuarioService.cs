@@ -1,61 +1,126 @@
-using FirebaseAdmin.Auth;
 using TuristeiRV.API.DTOs;
 using TuristeiRV.API.Mappers;
 using TuristeiRV.API.Repositories;
+using Google.Cloud.Firestore;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using TuristeiRV.API.Configurations;
+using TuristeiRV.API.Models.Entidade;
+using FirebaseAdmin.Auth;
+using System.Text.Json;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TuristeiRV.API.Services;
 public class UsuarioService : IUsuarioService
 {
-    private readonly IUsuarioRepository _usuarioRepository;
+    private readonly HttpClient httpClient;
+    private readonly IUsuarioRepository usuarioRepository;
+    private readonly FirebaseAuth auth;
+    private readonly string apiKey;
 
-    public UsuarioService(IUsuarioRepository usuarioRepository)
+    public UsuarioService(HttpClient httpClient, FirebaseAuth auth, IUsuarioRepository usuarioRepository, IOptions<FirebaseConfig> firebaseConfig)
     {
-        _usuarioRepository = usuarioRepository;
+        this.httpClient = httpClient;
+        this.auth = auth;
+        this.usuarioRepository = usuarioRepository;
+        this.apiKey = firebaseConfig.Value.Client.ApiKey;
     }
 
-    public async Task<string> CadastrarUsuarioAsync(UsuarioDto usuarioDto, string senha)
+    public async Task<UsuarioDto> RegistrarUsuarioAsync(Usuario usuario, string senha)
     {
-        var usuario = UsuarioMapper.ToModel(usuarioDto);
-
-        var existingUser = await _usuarioRepository.GetUsuarioByEmailAsync(usuario.Email);
-        if (existingUser != null)
-        {
-            throw new Exception("Usuário já cadastrado com este email.");
-        }
-
+        // Cria o usuário no Firebase Authentication
         var userRecordArgs = new UserRecordArgs
         {
             Email = usuario.Email,
-            Password = senha,  
+            Password = senha
         };
 
-        UserRecord userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(userRecordArgs);
+        UserRecord userRecord = await auth.CreateUserAsync(userRecordArgs);
+        string uid = userRecord.Uid;
 
-        usuario.Id = userRecord.Uid;
+        // Hash da senha para armazenar na coleção
+        usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha);
 
-        await _usuarioRepository.AddUsuarioAsync(usuario);
+        // Salva o usuário na coleção 'users'
+        await usuarioRepository.SalvarUsuarioAsync(uid, usuario);
 
-        return userRecord.Uid;  
-    }
-
-    public async Task EditarUsuarioAsync(string id, UsuarioDto usuarioDto)
-    {
-        var usuario = UsuarioMapper.ToModel(usuarioDto);
-
-        await _usuarioRepository.UpdateUsuarioAsync(id, usuario);
-    }
-
-    public async Task<bool> AutenticarUsuarioAsync(string email, string senha)
-    {
-        var usuario = await _usuarioRepository.GetUsuarioByEmailAsync(email);
-
-        string senhaHash = BCrypt.Net.BCrypt.HashPassword(senha);
-
-        if (usuario == null || !BCrypt.Net.BCrypt.Verify(senhaHash, usuario.SenhaHash))
+        // Mapeia para o DTO
+        return new UsuarioDto
         {
-            return false;  
+            Email = usuario.Email,
+            Nome = usuario.Nome,
+            Sobrenome = usuario.Sobrenome,
+            Endereco = usuario.Endereco,
+            Numero = usuario.Numero,
+            Bairro = usuario.Bairro,
+            Cep = usuario.Cep,
+            Complemento = usuario.Complemento
+        };
+    }
+
+    public async Task<UsuarioDto> AutenticarUsuarioAsync(string email, string senha)
+    {
+        string requestUri = $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}";
+
+        var payload = new
+        {
+            email = email,
+            password = senha,
+            returnSecureToken = true
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        HttpResponseMessage response = await httpClient.PostAsync(requestUri, content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new UnauthorizedAccessException("Credenciais inválidas.");
         }
 
-        return true;
+        var jsonResponse = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(jsonResponse);
+        var authResponse = JsonSerializer.Deserialize<FirebaseAuthResponse>(jsonResponse);
+
+        var usuario = await usuarioRepository.ObterUsuarioAsync(authResponse.LocalId);
+        if (usuario == null)
+        {
+            throw new UnauthorizedAccessException("Usuário não encontrado.");
+        }
+
+        return new UsuarioDto
+        {
+            Email = usuario.Email,
+            Nome = usuario.Nome,
+            Sobrenome = usuario.Sobrenome,
+            Endereco = usuario.Endereco,
+            Numero = usuario.Numero,
+            Bairro = usuario.Bairro,
+            Cep = usuario.Cep,
+            Complemento = usuario.Complemento
+        };
     }
+}
+public class FirebaseAuthResponse
+{
+    [JsonPropertyName("kind")]
+    public string Kind { get; set; }
+
+    [JsonPropertyName("localId")]
+    public string LocalId { get; set; }
+
+    [JsonPropertyName("email")]
+    public string Email { get; set; }
+
+    [JsonPropertyName("displayName")]
+    public string DisplayName { get; set; }
+
+    [JsonPropertyName("idToken")]
+    public string IdToken { get; set; }
+
+    [JsonPropertyName("refreshToken")]
+    public string RefreshToken { get; set; }
+
+    [JsonPropertyName("expiresIn")]
+    public string ExpiresIn { get; set; }
 }

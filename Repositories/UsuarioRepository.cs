@@ -6,36 +6,23 @@ namespace TuristeiRV.API.Repositories;
 
 public class UsuarioRepository : IUsuarioRepository
 {
-    private readonly FirestoreDb _firestoreDb;
-    private const string CollectionName = "users";
+    private readonly FirestoreDb firestoreDb;
+
     public UsuarioRepository(FirestoreDb firestoreDb)
     {
-        _firestoreDb = firestoreDb;
+        this.firestoreDb = firestoreDb;
     }
 
-    public async Task<string> AddUsuarioAsync(Usuario usuario)
+    public async Task SalvarUsuarioAsync(string uid, Usuario usuario)
     {
-        DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(usuario.Id);
+        DocumentReference docRef = firestoreDb.Collection("users").Document(uid);
         await docRef.SetAsync(usuario);
-        return usuario.Id;
     }
 
-    public async Task UpdateUsuarioAsync(string id, Usuario usuario)
+    public async Task<Usuario> ObterUsuarioAsync(string uid)
     {
-        DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(id);
-        await docRef.SetAsync(usuario, SetOptions.Overwrite);  
-    }
-
-    public async Task<Usuario> GetUsuarioByEmailAsync(string email)
-    {
-        Query query = _firestoreDb.Collection(CollectionName).WhereEqualTo("email", email);
-        QuerySnapshot snapshot = await query.GetSnapshotAsync();
-
-        if (snapshot.Documents.Count > 0)
-        {
-            return snapshot.Documents[0].ConvertTo<Usuario>();  
-        }
-
-        return null;
+        DocumentReference docRef = firestoreDb.Collection("users").Document(uid);
+        DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+        return snapshot.Exists ? snapshot.ConvertTo<Usuario>() : null;
     }
 }

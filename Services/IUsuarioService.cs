@@ -1,9 +1,9 @@
 using TuristeiRV.API.DTOs;
+using TuristeiRV.API.Models.Entidade;
 
 namespace TuristeiRV.API.Services;
 public interface IUsuarioService
 {
-    Task<string> CadastrarUsuarioAsync(UsuarioDto usuarioDto, string senha);
-    Task EditarUsuarioAsync(string id, UsuarioDto usuarioDto);
-    Task<bool> AutenticarUsuarioAsync(string email, string senha);
+    Task<UsuarioDto> RegistrarUsuarioAsync(Usuario usuario, string senha);
+    Task<UsuarioDto> AutenticarUsuarioAsync(string email, string senha);
 }

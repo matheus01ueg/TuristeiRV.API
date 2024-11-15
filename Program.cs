@@ -1,43 +1,21 @@
 using FirebaseAdmin;
+using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
 using Grpc.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using TuristeiRV.API.Configurations;
 using TuristeiRV.API.Repositories;
 using TuristeiRV.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<FirebaseConfig>(builder.Configuration.GetSection("Firebase"));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// ******* Credenciais para o Railway *******
-// string ?credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
-// if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
-// {
-//     FirebaseApp.Create(new AppOptions()
-//     {
-//         Credential = GoogleCredential.FromFile(credentialsPath)
-//     });
-// }
-
-
-// builder.Services.AddSingleton<FirestoreDb>(provider =>
-// {
-//     GoogleCredential credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json");
-
-//     string projectId = "turisteirv";  
-
-//     FirestoreDb firestoreDb = FirestoreDb.Create(projectId, new FirestoreClientBuilder
-//     {
-//         ChannelCredentials = credential.ToChannelCredentials()
-//     }.Build());
-
-//     return firestoreDb;
-// });
-
 
 //******** Conexao para ambiente de desenvolvimento ****
 // Carregar o conteúdo do JSON da variável de ambiente
@@ -68,40 +46,26 @@ else
     throw new Exception("A variável de ambiente GOOGLE_CREDENTIALS_JSON não está definida ou está vazia.");
 }
 
+builder.Services.AddSingleton(provider =>
+{
+    if (string.IsNullOrEmpty(credentialsJson))
+    {
+        throw new Exception("A variável de ambiente GOOGLE_CREDENTIALS_JSON não está definida ou está vazia.");
+    }
 
-//****** Conexão para o servidor Railway e ambiente local *******
-// string? credentialsPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS");
+    GoogleCredential credential;
+    using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(credentialsJson)))
+    {
+        credential = GoogleCredential.FromStream(stream);
+    }
 
-// builder.Services.AddSingleton<FirestoreDb>(provider =>
-// {
-//     GoogleCredential credential;
+    FirebaseApp app = FirebaseApp.Create(new AppOptions
+    {
+        Credential = credential
+    });
 
-//     if (string.IsNullOrEmpty(credentialsPath))
-//     {
-//         credential = GoogleCredential.FromFile("D:\\Projetos\\Credencial\\turisteirv.json")
-//             .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
-//     }
-//     else
-//     {
-//         credential = GoogleCredential.FromFile(credentialsPath)
-//             .CreateScoped(new[] { "https://www.googleapis.com/auth/datastore" });
-//     }
-
-//     FirestoreDb firestoreDb = FirestoreDb.Create("turisteirv", new FirestoreClientBuilder
-//     {
-//         ChannelCredentials = credential.ToChannelCredentials()
-//     }.Build());
-
-//     return firestoreDb;
-// });
-
-// if (FirebaseApp.DefaultInstance == null && !string.IsNullOrEmpty(credentialsPath))
-// {
-//     FirebaseApp.Create(new AppOptions()
-//     {
-//         Credential = GoogleCredential.FromFile(credentialsPath)
-//     });
-// }
+    return FirebaseAuth.GetAuth(app);
+});
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
@@ -114,6 +78,8 @@ builder.Services.AddScoped<IComentarioService, ComentarioService>();
 
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+
+builder.Services.AddHttpClient();
 
 //****** Definindo conf para o Railway ******
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
