@@ -151,6 +151,8 @@ public class PontoTuristicoRepository : IPontoTuristicoRepository
 
         var media = (double)somaAvaliacoes / comentarios.Documents.Count;
 
+        media = Math.Round(media, 2);
+
         await _firestoreDb.Collection(CollectionName)
             .Document(pontoTuristicoId)
             .UpdateAsync(new Dictionary<string, object> { { "avaliacao", media } });
