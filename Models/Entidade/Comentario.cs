@@ -12,7 +12,7 @@ public class Comentario
     public string ComentarioTexto { get; set; }
 
     [FirestoreProperty("data")]
-    public Timestamp Data { get; set; }
+    public string Data { get; set; }
 
     [FirestoreDocumentId]
     public string Id { get; set; }

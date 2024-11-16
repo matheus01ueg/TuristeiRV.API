@@ -41,12 +41,12 @@ public class ComentarioRepository : IComentarioRepository
         return snapshot.Documents.Select(d => d.ConvertTo<Comentario>()).ToList();
     }
 
-    public async Task AddComentarioAsync(Comentario comentario)
+    public async Task<double> AddComentarioAsync(Comentario comentario)
     {
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document();
         await docRef.SetAsync(comentario);
 
-        await _pontoTuristicoRepository.AtualizarMediaAvaliacaoAsync(comentario.PontoTuristicoId);
+        return await _pontoTuristicoRepository.AtualizarMediaAvaliacaoAsync(comentario.PontoTuristicoId);
     }
 
     public async Task UpdateComentarioAsync(string id, Comentario comentario)

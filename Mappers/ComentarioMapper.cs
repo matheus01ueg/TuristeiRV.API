@@ -12,7 +12,7 @@ public static class ComentarioMapper
         {
             Avaliacao = dto.Avaliacao,
             ComentarioTexto = dto.ComentarioTexto,
-            Data = Timestamp.FromDateTime(dto.Data.ToUniversalTime()),
+            Data = dto.Data,
             Id = dto.Id,
             Nome = dto.Nome,
             PontoTuristicoId = dto.PontoTuristicoId,
@@ -27,7 +27,7 @@ public static class ComentarioMapper
         {
             Avaliacao = model.Avaliacao,
             ComentarioTexto = model.ComentarioTexto,
-            Data = model.Data.ToDateTime(),
+            Data = model.Data,
             Id = model.Id,
             Nome = model.Nome,
             PontoTuristicoId = model.PontoTuristicoId,

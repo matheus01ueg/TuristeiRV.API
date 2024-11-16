@@ -1,5 +1,7 @@
+using Google.Cloud.Firestore;
 using TuristeiRV.API.DTOs;
 using TuristeiRV.API.Mappers;
+using TuristeiRV.API.Models.Entidade;
 using TuristeiRV.API.Repositories;
 
 namespace TuristeiRV.API.Services;
@@ -30,10 +32,16 @@ public class ComentarioService : IComentarioService
         return comentario?.ToDto();
     }
 
-    public async Task AdicionarComentarioAsync(ComentarioDto comentarioDto)
+    public async Task<double> AdicionarComentarioAsync(ComentarioDto comentarioDto)
     {
         var comentario = ComentarioMapper.ToModel(comentarioDto);
-        await _comentarioRepository.AddComentarioAsync(comentario);
+
+        if (string.IsNullOrEmpty(comentario.Id))
+        {
+            comentario.Id = Guid.NewGuid().ToString();
+        }
+
+        return await _comentarioRepository.AddComentarioAsync(comentario);
     }
 
     public async Task AtualizarComentarioAsync(string id, ComentarioDto comentarioDto)

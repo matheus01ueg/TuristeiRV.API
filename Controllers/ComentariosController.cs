@@ -54,8 +54,8 @@ public class ComentariosController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        await _comentarioService.AdicionarComentarioAsync(comentarioDto);
-        return CreatedAtAction(nameof(ObterComentarioPorId), new { id = comentarioDto.Id }, comentarioDto);
+        double novaMedia = await _comentarioService.AdicionarComentarioAsync(comentarioDto);
+        return Ok(new { mediaavaliacao = novaMedia });
     }
 
     [HttpPut("{id}")]
