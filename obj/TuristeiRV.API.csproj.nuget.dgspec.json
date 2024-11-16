@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj": {}
+    "d:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj": {}
   },
   "projects": {
-    "D:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj": {
+    "d:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
+        "projectUniqueName": "d:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
         "projectName": "TuristeiRV.API",
-        "projectPath": "D:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
+        "projectPath": "d:\\Projetos\\TuristeiRV.API\\TuristeiRV.API.csproj",
         "packagesPath": "C:\\Users\\mathe\\.nuget\\packages\\",
-        "outputPath": "D:\\Projetos\\TuristeiRV.API\\obj\\",
+        "outputPath": "d:\\Projetos\\TuristeiRV.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

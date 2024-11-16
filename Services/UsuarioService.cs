@@ -89,6 +89,7 @@ public class UsuarioService : IUsuarioService
 
         return new UsuarioDto
         {
+            Uid = authResponse.LocalId,
             Email = usuario.Email,
             Nome = usuario.Nome,
             Sobrenome = usuario.Sobrenome,

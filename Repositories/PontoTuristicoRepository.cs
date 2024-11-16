@@ -128,4 +128,30 @@ public class PontoTuristicoRepository : IPontoTuristicoRepository
 
         return pontosTuristicos.GroupBy(p => p.Id).Select(g => g.First()).ToList();
     }
+
+    public async Task AtualizarMediaAvaliacaoAsync(string pontoTuristicoId)
+    {
+        var comentarios = await _firestoreDb
+            .Collection("comentarios")
+            .WhereEqualTo("pontoTuristicoId", pontoTuristicoId)
+            .GetSnapshotAsync();
+
+        if (comentarios.Documents.Count == 0)
+        {
+            await _firestoreDb.Collection(CollectionName)
+                .Document(pontoTuristicoId)
+                .UpdateAsync(new Dictionary<string, object> { { "avaliacao", 0 } });
+            return;
+        }
+
+        var somaAvaliacoes = comentarios.Documents
+            .Select(doc => doc.GetValue<int>("avaliacao"))
+            .Sum();
+
+        var media = (double)somaAvaliacoes / comentarios.Documents.Count;
+
+        await _firestoreDb.Collection(CollectionName)
+            .Document(pontoTuristicoId)
+            .UpdateAsync(new Dictionary<string, object> { { "avaliacao", media } });
+    }
 }

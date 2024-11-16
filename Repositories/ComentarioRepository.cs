@@ -6,10 +6,12 @@ namespace TuristeiRV.API.Repositories;
 public class ComentarioRepository : IComentarioRepository
 {
     private readonly FirestoreDb _firestoreDb;
+    private readonly IPontoTuristicoRepository _pontoTuristicoRepository;
     private const string CollectionName = "comentarios";
-    public ComentarioRepository(FirestoreDb firestoreDb)
+    public ComentarioRepository(FirestoreDb firestoreDb, IPontoTuristicoRepository pontoTuristicoRepository)
     {
         _firestoreDb = firestoreDb;
+        _pontoTuristicoRepository = pontoTuristicoRepository;
     }
 
     public async Task<List<Comentario>> GetComentariosAsync()
@@ -43,17 +45,21 @@ public class ComentarioRepository : IComentarioRepository
     {
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document();
         await docRef.SetAsync(comentario);
+
+        await _pontoTuristicoRepository.AtualizarMediaAvaliacaoAsync(comentario.PontoTuristicoId);
     }
 
     public async Task UpdateComentarioAsync(string id, Comentario comentario)
     {
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(id);
         await docRef.SetAsync(comentario, SetOptions.Overwrite);
+
+        await _pontoTuristicoRepository.AtualizarMediaAvaliacaoAsync(comentario.PontoTuristicoId);
     }
 
     public async Task DeleteComentarioAsync(string id)
     {
         DocumentReference docRef = _firestoreDb.Collection(CollectionName).Document(id);
-        await docRef.DeleteAsync();
+        await docRef.DeleteAsync();        
     }
 }
